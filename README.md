@@ -1,6 +1,8 @@
 
 # 🚀 idea2prompt - The Ultimate Prompt Playground!
 
+https://asishpadhiofficial.github.io/idea2prompt-generator/
+
 Turn your **wildest ideas** into **epic prompts** with a fun, interactive web app. 🎉
 
 This project is a single-page HTML+CSS+JavaScript application that allows users to type in any idea and instantly transform it into a variety of **prompt styles**—from **technical** and **detailed** to **cyberpunk** and **retro**.
