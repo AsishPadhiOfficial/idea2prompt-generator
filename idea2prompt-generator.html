@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 idea2prompt - The Ultimate Prompt Playground!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            padding: 20px;
+            animation: backgroundShift 10s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); }
+            50% { background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%); }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+            animation: rainbow 3s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            animation: bounce 2s infinite;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            animation: textGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes textGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .fun-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 700;
+            color: #374151;
+            font-size: 1.1rem;
+        }
+
+        .style-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .style-option {
+            padding: 15px 12px;
+            border: 3px solid transparent;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .style-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .style-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .style-option:hover::before {
+            left: 100%;
+        }
+
+        .style-option.active {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border-color: #4f46e5;
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(79, 70, 229, 0.4);
+        }
+
+        .idea-input {
+            width: 100%;
+            padding: 20px;
+            border: 3px solid #e5e7eb;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+        }
+
+        .idea-input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+            transform: scale(1.02);
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .generate-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .generate-btn:hover:not(:disabled) {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.4);
+        }
+
+        .generate-btn:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .magic-wand {
+            display: inline-block;
+            margin-left: 10px;
+            animation: wave 1s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            75% { transform: rotate(-15deg); }
+        }
+
+        .result-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8fafc, #ffffff);
+            border-radius: 20px;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .result-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .copy-btn, .regenerate-btn, .surprise-btn {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .regenerate-btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .surprise-btn {
+            background: linear-gradient(135deg, #ec4899, #be185d);
+            color: white;
+        }
+
+        .copy-btn:hover, .regenerate-btn:hover, .surprise-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .prompt-output {
+            background: linear-gradient(135deg, #ffffff, #f9fafb);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e5e7eb;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #374151;
+            white-space: pre-wrap;
+            max-height: 500px;
+            overflow-y: auto;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #6b7280;
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #4f46e5;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        .loading-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            animation: loadingPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .surprise-ideas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .surprise-idea {
+            background: linear-gradient(135deg, #fef3c7, #fcd34d);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .surprise-idea:hover {
+            background: linear-gradient(135deg, #fcd34d, #f59e0b);
+            transform: scale(1.05);
+            border-color: #f59e0b;
+        }
+
+        .achievement {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+            font-weight: 600;
+        }
+
+        .achievement.show {
+            transform: translateX(0);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f59e0b;
+            animation: confetti-fall 3s linear infinite;
+            z-index: 999;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .style-selector {
+                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+                gap: 8px;
+            }
+            
+            .fun-stats {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🚀</div>
+            <h1>Turn your <span class="highlight">idea</span><br>into a <span class="highlight">prompt</span></h1>
+            <p class="subtitle">The Ultimate Prompt Playground - Make Every Idea Epic! ✨</p>
+            
+            <div class="fun-stats">
+                <div class="stat-item">🎯 <span id="promptsGenerated">0</span> Prompts Created</div>
+                <div class="stat-item">🏆 <span id="stylesUsed">0</span>/8 Styles Explored</div>
+                <div class="stat-item">⚡ <span id="currentStreak">0</span> Generation Streak</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>🎨 Choose Your Adventure Style:</label>
+            <div class="style-selector">
+                <div class="style-option active" data-style="technical" data-emoji="🔧">🔧 Tech</div>
+                <div class="style-option" data-style="creative" data-emoji="🎨">🎨 Creative</div>
+                <div class="style-option" data-style="minimal" data-emoji="✨">✨ Minimal</div>
+                <div class="style-option" data-style="detailed" data-emoji="📋">📋 Detailed</div>
+                <div class="style-option" data-style="retro" data-emoji="📺">📺 90s Retro</div>
+                <div class="style-option" data-style="cyberpunk" data-emoji="🤖">🤖 Cyberpunk</div>
+                <div class="style-option" data-style="brutalist" data-emoji="🏗️">🏗️ Brutalist</div>
+                <div class="style-option" data-style="modern" data-emoji="🌟">🌟 Modern</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="ideaInput">💡 Your Amazing Idea:</label>
+            <textarea 
+                id="ideaInput" 
+                class="idea-input" 
+                placeholder="Type anything... a dragon-powered pizza delivery service? An app for talking to plants? Go wild! 🚀"
+            ></textarea>
+            
+            <div class="surprise-ideas">
+                <div class="surprise-idea" onclick="setRandomIdea()">🎲 Surprise Me!</div>
+                <div class="surprise-idea" onclick="setIdea('An app where you can rate your dreams')">💭 Dream Rater</div>
+                <div class="surprise-idea" onclick="setIdea('A social network for pets')">🐕 Pet Social</div>
+                <div class="surprise-idea" onclick="setIdea('Time travel booking agency')">⏰ Time Travel</div>
+                <div class="surprise-idea" onclick="setIdea('Virtual reality for plants')">🌱 Plant VR</div>
+            </div>
+        </div>
+
+        <button class="generate-btn" id="generateBtn">
+            🪄 Generate Epic Prompt <span class="magic-wand">✨</span>
+        </button>
+
+        <div id="loadingSection" class="loading hidden">
+            <div class="spinner"></div>
+            <div class="loading-text">🔮 Crafting your magical prompt...</div>
+        </div>
+
+        <div id="resultSection" class="result-section hidden">
+            <div class="result-header">
+                <div class="result-title">🎉 Your Epic Prompt is Ready!</div>
+                <div class="button-group">
+                    <button class="surprise-btn" id="surpriseBtn">🎲 Random Style</button>
+                    <button class="regenerate-btn" id="regenerateBtn">🔄 New Version</button>
+                    <button class="copy-btn" id="copyBtn">📋 Copy Magic</button>
+                </div>
+            </div>
+            <div id="promptOutput" class="prompt-output"></div>
+        </div>
+    </div>
+
+    <div id="achievement" class="achievement">
+        <span id="achievementText">Achievement Unlocked! 🏆</span>
+    </div>
+
+    <script>
+        // Fun variables to track user engagement
+        let promptsGenerated = 0;
+        let stylesUsed = new Set();
+        let currentStreak = 0;
+        let selectedStyle = 'technical';
+        let achievements = [];
+
+        // Crazy fun ideas for random generation
+        const randomIdeas = [
+            "An AI that writes breakup texts for you",
+            "A dating app for people's pets",
+            "Virtual reality meditation with dinosaurs",
+            "An app that translates baby crying",
+            "Social media platform for ghosts",
+            "Uber but for borrowing someone's parents",
+            "Netflix for people's dreams",
+            "A productivity app that makes you do yoga first",
+            "Dating app where you only see people's Google search history",
+            "An app that makes vegetables taste like pizza",
+            "Instagram but for bacteria cultures",
+            "Spotify for people's heartbeats",
+            "A marketplace for trading childhood memories",
+            "An app that lets you rent friends for events",
+            "Virtual reality job interviews in space",
+            "A social network where you can only communicate through memes",
+            "An app that predicts what you'll regret buying",
+            "A platform for trading your skills with aliens",
+            "An Airbnb for people's dreams",
+            "A dating app based on your refrigerator contents"
+        ];
+
+        // Fun prompt generators with personality!
+        const promptGenerators = {
+            technical: function(idea) {
+                const frameworks = ['React with TypeScript', 'Vue.js 3', 'Svelte Kit', 'Next.js 13', 'Angular 15'];
+                const backends = ['Node.js with Express', 'Python FastAPI', 'Go with Gin', 'Rust with Actix', 'Deno with Oak'];
+                const databases = ['PostgreSQL with Prisma', 'MongoDB Atlas', 'Supabase', 'PlanetScale MySQL', 'FaunaDB'];
+                const coolFeatures = [
+                    'real-time WebSocket connections',
+                    'AI-powered recommendations',
+                    'blockchain-based verification',
+                    'machine learning predictions',
+                    'AR/VR integration',
+                    'voice command interface',
+                    'biometric authentication',
+                    'edge computing optimization',
+                    'micro-frontend architecture',
+                    'serverless deployment'
+                ];
+
+                const selectedFramework = frameworks[Math.floor(Math.random() * frameworks.length)];
+                const selectedBackend = backends[Math.floor(Math.random() * backends.length)];
+                const selectedDB = databases[Math.floor(Math.random() * databases.length)];
+                const features = coolFeatures.sort(() => 0.5 - Math.random()).slice(0, 4);
+
+                return `🚀 TECHNICAL MASTERMIND CHALLENGE 🚀
+
+Build the most EPIC technical solution for: "${idea}"
+
+🎯 TECH STACK SELECTION:
+• Frontend: ${selectedFramework} (because it's awesome!)
+• Backend: ${selectedBackend} (power and speed!)
+• Database: ${selectedDB} (data storage magic!)
+• DevOps: Docker + Kubernetes on AWS/Vercel
+
+⚡ MIND-BLOWING FEATURES:
+${features.map((feature, i) => `${i + 1}. Implement ${feature} - users will love this!`).join('\n')}
+
+🔥 TECHNICAL CHALLENGES:
+• Design a scalable microservices architecture
+• Create a lightning-fast API (sub-100ms response times!)
+• Build responsive UI that works on smartwatches to 8K displays
+• Implement advanced caching with Redis for instant loading
+• Add comprehensive testing (unit, integration, e2e)
+• Set up CI/CD pipeline with automated deployments
+
+🏆 SUCCESS METRICS:
+• 99.9% uptime (because downtime is not an option!)
+• Handle 1M+ concurrent users without breaking a sweat
+• Load pages in under 2 seconds worldwide
+• Achieve 90+ Lighthouse performance score
+
+💡 BONUS CHALLENGES:
+• Make it PWA-ready for offline functionality
+• Add dark mode (because everyone loves dark mode)
+• Implement advanced security (OWASP Top 10 compliant)
+• Create comprehensive API documentation with Swagger
+
+This isn't just an app - it's a TECHNICAL MASTERPIECE! 🎨✨`;
+            },
+
+            creative: function(idea) {
+                const vibes = ['whimsical and magical', 'bold and rebellious', 'dreamy and ethereal', 'playful and energetic', 'mysterious and intriguing'];
+                const colors = ['sunset gradients with gold accents', 'neon cyberpunk palette', 'soft pastels with rainbow highlights', 'monochrome with electric blue pops', 'nature-inspired earth tones'];
+                const styles = ['hand-drawn illustrations', 'abstract geometric shapes', '3D rendered elements', 'watercolor textures', 'retro pixel art'];
+
+                const selectedVibe = vibes[Math.floor(Math.random() * vibes.length)];
+                const selectedColors = colors[Math.floor(Math.random() * colors.length)];
+                const selectedStyle = styles[Math.floor(Math.random() * styles.length)];
+
+                return `🎨 CREATIVE GENIUS MODE ACTIVATED 🎨
+
+Transform this idea into pure CREATIVE MAGIC: "${idea}"
+
+✨ CREATIVE VISION:
+Create a ${selectedVibe} experience that makes people go "WOW!" and immediately want to share it with everyone they know!
+
+🌈 VISUAL IDENTITY:
+• Color Palette: ${selectedColors} - because life's too short for boring colors!
+• Art Style: ${selectedStyle} - this will make your project unforgettable
+• Typography: Mix bold headlines with elegant body text
+• Mood: Think "Disney magic meets Apple design meets your wildest dreams"
+
+🎭 STORYTELLING ELEMENTS:
+• Create a compelling hero's journey for your users
+• Design memorable characters or mascots (even for serious apps!)
+• Build emotional moments that make people laugh, cry, or gasp
+• Add surprise and delight moments throughout the experience
+• Include easter eggs and hidden features for curious explorers
+
+🚀 ENGAGEMENT SUPERPOWERS:
+• Interactive animations that respond to user behavior
+• Gamification elements (points, badges, achievements!)
+• Social sharing features that make people look cool
+• Personalization that makes each user feel special
+• Community features that bring people together
+
+🎪 EXPERIENCE DESIGN:
+• Onboarding that feels like an adventure, not a chore
+• Micro-interactions that add personality to every click
+• Sound design that enhances the emotional journey
+• Accessibility features that welcome everyone to the party
+• Mobile-first design that works beautifully everywhere
+
+🏆 THE ULTIMATE GOAL:
+Create something so amazing that people become evangelists, telling everyone "YOU HAVE TO TRY THIS!" Make it go viral not through marketing, but through pure creative awesomeness!
+
+This isn't just a project - it's an CREATIVE REVOLUTION! 🌟🎉`;
+            },
+
+            minimal: function(idea) {
+                return `✨ MINIMALIST MASTER CLASS ✨
+
+Strip down to pure essence: "${idea}"
+
+🎯 THE MINIMALIST PHILOSOPHY:
+"Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away." - Antoine de Saint-Exupéry
+
+🔍 ESSENTIAL ELEMENTS ONLY:
+• Identify the ONE core problem your idea solves
+• Remove everything that doesn't directly serve that purpose
+• Design with maximum impact, minimum elements
+• Every pixel, every word, every feature must earn its place
+
+⚡ POWER OF SIMPLICITY:
+• Ultra-fast loading (because speed IS a feature)
+• Intuitive navigation (grandmas should get it in 5 seconds)
+• Clean, breathable white space that lets content shine
+• Limited color palette (2-3 colors max - choose wisely!)
+• Typography that's readable from space
+
+🧘 USER EXPERIENCE ZEN:
+• One primary action per screen/page
+• Progressive disclosure - reveal complexity only when needed
+• Eliminate decision paralysis - guide users naturally
+• Error-free interactions through thoughtful design
+• Accessible to everyone, everywhere, always
+
+🏗️ TECHNICAL MINIMALISM:
+• Vanilla JavaScript where possible (less dependencies = less problems)
+• Optimize images and assets ruthlessly
+• Clean, semantic HTML structure
+• Minimal CSS with no unnecessary frameworks
+• Focus on core web vitals and performance
+
+🎨 AESTHETIC PERFECTION:
+• Generous white space as a design element
+• Consistent spacing and alignment
+• High contrast for excellent readability
+• Subtle shadows and transitions (less is more!)
+• Every element serves a purpose - beauty AND function
+
+The goal: Create something so elegantly simple that competitors wonder "Why didn't I think of that?" 
+
+SIMPLE. POWERFUL. UNFORGETTABLE. 🌟`;
+            },
+
+            detailed: function(idea) {
+                return `📋 ULTIMATE COMPREHENSIVE BLUEPRINT 📋
+
+DETAILED MASTER PLAN for: "${idea}"
+
+📊 PHASE 1: DISCOVERY & RESEARCH (Weeks 1-3)
+• Market Research: Analyze 50+ competitors, identify gaps and opportunities
+• User Research: Conduct 25+ interviews, surveys, focus groups
+• Technical Research: Evaluate platforms, frameworks, third-party services
+• Legal Research: Compliance requirements, intellectual property, regulations
+• Financial Research: Cost analysis, pricing strategies, revenue models
+
+👥 PHASE 2: PLANNING & STRATEGY (Weeks 4-6)
+• User Personas: Create 5-7 detailed user archetypes with pain points
+• User Journey Mapping: Map every touchpoint from awareness to advocacy
+• Information Architecture: Structure all content and functionality logically
+• Technical Architecture: Design scalable, maintainable system architecture
+• Project Timeline: Detailed Gantt chart with dependencies and milestones
+
+🎨 PHASE 3: DESIGN & PROTOTYPING (Weeks 7-10)
+• Brand Identity: Logo, colors, typography, voice, tone guidelines
+• UI/UX Design: Wireframes, mockups, interactive prototypes
+• Design System: Component library, style guide, pattern library
+• Usability Testing: Test with 20+ users, iterate based on feedback
+• Accessibility Audit: WCAG 2.1 AA compliance verification
+
+⚙️ PHASE 4: DEVELOPMENT (Weeks 11-20)
+• Environment Setup: Development, staging, production environments
+• Backend Development: Database, APIs, business logic, integrations
+• Frontend Development: User interface, user experience, responsiveness
+• Quality Assurance: Unit tests, integration tests, end-to-end testing
+• Performance Optimization: Speed, scalability, resource usage
+
+🚀 PHASE 5: LAUNCH & GROWTH (Weeks 21-24)
+• Soft Launch: Beta testing with limited user group
+• Marketing Campaign: Content, social media, PR, partnerships
+• Analytics Setup: Track user behavior, conversion rates, performance
+• Customer Support: Help documentation, support channels, FAQs
+• Continuous Improvement: A/B testing, feature iterations, optimization
+
+📈 SUCCESS METRICS & KPIs:
+• User Acquisition: Monthly active users, conversion rates
+• User Engagement: Session duration, feature adoption, retention rates
+• Business Metrics: Revenue, customer lifetime value, churn rate
+• Technical Metrics: Performance, uptime, error rates
+• Satisfaction Metrics: NPS scores, reviews, support tickets
+
+This isn't just a plan - it's a GUARANTEED SUCCESS BLUEPRINT! 🏆✨`;
+            },
+
+            retro: function(idea) {
+                return `📺 TOTALLY RADICAL 90s TIME MACHINE 📺
+
+Bringing back the BEST decade for: "${idea}"
+
+🌈 90S AESTHETIC OVERLOAD:
+• Colors: Electric neon pink, cyber blue, toxic green, sunset orange
+• Fonts: Impact, Arial Black, Comic Sans (yes, we're going there!)
+• Graphics: Pixelated icons, animated GIFs, rainbow gradients EVERYWHERE
+• Sound: Dial-up modem sounds, Windows 95 startup chime, MIDI music
+
+🕹️ RETRO FEATURES THAT SLAP:
+• Splash screens with "Loading..." bars (even if it loads instantly!)
+• Visitor counters and "Last updated" timestamps
+• Blinking text and marquee scrolling (because subtlety is overrated)
+• Under construction GIFs with dancing workers
+• Guest books where people can leave messages
+• Hit counters that make you feel popular
+
+📟 NOSTALGIC USER EXPERIENCE:
+• Popup windows (but good ones that don't annoy!)
+• Frame-based layouts with chunky borders
+• Navigation buttons that look like actual buttons
+• Background MIDI music (with a mute button for the haters)
+• Chat rooms and forums instead of modern social media
+• Email forms instead of instant messaging
+
+🎮 90S TECH VIBES:
+• Design for 800x600 resolution (then scale up for modern screens)
+• Use tables for layout (ironically, of course!)
+• Include a "Best viewed in Netscape Navigator" badge
+• Add some interactive Flash-style animations (but with CSS/JS)
+• Create a site ring or web portal feel
+• Include some sweet animated cursors
+
+DUDE, this is gonna be SO FETCH! 🤙✨`;
+            },
+
+            cyberpunk: function(idea) {
+                return `🤖 CYBERPUNK 2077 MEETS YOUR IDEA 🤖
+
+Welcome to the DIGITAL UNDERGROUND: "${idea}"
+
+⚡ CYBER AESTHETIC:
+• Colors: Terminal green, electric blue, hot pink neons, chrome silver
+• Lighting: Dramatic shadows, neon rim lighting, holographic effects
+• Textures: Brushed metal, circuit boards, glitch distortions
+• Typography: Monospace fonts, terminal-style interfaces
+
+🏙️ DYSTOPIAN DESIGN ELEMENTS:
+• Dark UI with bright accent colors that burn your retinas (in a good way!)
+• Glitch effects and digital noise overlays
+• Matrix-style cascading code backgrounds
+• Holographic buttons and interfaces
+• Scanline effects across all screens
+• Corporate logos with a sinister twist
+
+🔓 HACKER CULTURE FEATURES:
+• Terminal-style command interfaces (even for simple tasks!)
+• ASCII art and text-based graphics
+• Progress bars that look like hacking sequences
+• Login screens that feel like breaking into mainframes
+• Encrypted messaging systems
+• Dark web marketplace aesthetics
+
+🌃 IMMERSIVE EXPERIENCE:
+• Ambient synthwave/cyberpunk soundtrack
+• Voice prompts with robotic/AI personality
+• Augmented reality overlay effects
+• Surveillance camera POV elements
+• Corporate vs. underground resistance themes
+• Easter eggs hidden in the code matrix
+
+🚨 TECHNICAL NOIR:
+• Everything loads with "ACCESSING DATABASE..." messages
+• Error messages written like system breaches
+• User profiles look like criminal records or corp files
+• Notifications appear as urgent system alerts
+• Data visualization as 3D holographic displays
+
+JACK IN. TUNE OUT. CHANGE THE WORLD. 🌐💀`;
+            },
+
+            brutalist: function(idea) {
+                return `🏗️ BRUTALIST REBELLION MANIFESTO 🏗️
+
+NO COMPROMISE. NO DECORATION. PURE FUNCTION: "${idea}"
+
+⚒️ BRUTALIST COMMANDMENTS:
+• Function over form, ALWAYS
+• Raw materials, honest construction
+• No unnecessary ornamentation or "pretty" design
+• Monospace fonts only (aesthetics are a lie!)
+• Black, white, and ONE accent color maximum
+• Harsh geometric shapes and brutal angles
+
+🚫 ANTI-DESIGN PRINCIPLES:
+• Reject smooth gradients - embrace hard edges
+• No rounded corners (they're weak!)
+• Abandon fancy animations - instant state changes only
+• System fonts only - custom typography is vanity
+• Expose the underlying structure - show the HTML bones
+• Make users THINK about their interactions
+
+💪 UNCOMPROMISING USER EXPERIENCE:
+• Navigation that challenges conventional wisdom
+• Forms that look like government documents
+• Buttons that look like actual switches and levers
+• Error messages written in ALL CAPS (no coddling users!)
+• No loading spinners - just brutal honesty about wait times
+• Documentation written like technical manuals
+
+🏢 INSTITUTIONAL AESTHETIC:
+• Layout inspired by concrete architecture
+• Typography that screams "OFFICIAL DOCUMENT"
+• Color scheme borrowed from Soviet-era computers
+• Interface elements that look stamped by bureaucrats
+• Data tables that embrace their tableness
+• Forms that don't apologize for being forms
+
+⚡ TECHNICAL BRUTALISM:
+• Vanilla HTML/CSS/JS (frameworks are for the weak!)
+• Semantic markup that validates perfectly
+• Accessible by default (function includes everyone!)
+• Fast loading because there's nothing unnecessary
+• Works perfectly on any device (responsive brutalism!)
+
+This isn't design - it's DIGITAL ARCHITECTURE. Build it. Use it. Question everything else. 🔨⚡`;
+            },
+
+            modern: function(idea) {
+                return `🌟 CUTTING-EDGE MODERN MASTERPIECE 🌟
+
+THE FUTURE IS NOW for: "${idea}"
+
+✨ MODERN DESIGN DNA:
+• Glassmorphism with frosted glass effects and transparency
+• Neumorphism for tactile, almost-3D interface elements
+• Dynamic gradients that shift with user interaction
+• Micro-animations that breathe life into every element
+• AI-powered adaptive interfaces that learn from users
+
+🚀 NEXT-GENERATION FEATURES:
+• Voice-first interactions with natural language processing
+• Gesture-based navigation (swipe, pinch, voice commands)
+• AR integration for spatial computing experiences
+• Real-time collaboration with multiplayer cursors
+• Smart notifications that predict what you need
+• Contextual UI that adapts to time, location, and behavior
+
+🎨 AESTHETIC INNOVATION:
+• Dynamic theming based on time of day and user mood
+• Biometric-based personalization (heart rate affects interface speed!)
+• 3D spatial interfaces with depth and layering
+• Particle systems and physics-based animations
+• Color palettes that shift based on content and context
+• Typography that adjusts for optimal reading based on lighting
+
+⚡ TECHNICAL EXCELLENCE:
+• Edge computing for instant responses worldwide
+• Progressive Web App with native-level performance
+• Machine learning models running client-side
+• Blockchain integration for decentralized features
+• WebAssembly for computationally intensive tasks
+• Real-time data synchronization across all devices
+
+🌍 SUSTAINABLE & INCLUSIVE:
+• Carbon-neutral hosting and green web practices
+• Full accessibility with screen reader optimization
+• Multi-language support with cultural adaptations
+• Offline-first architecture for global accessibility
+• Privacy-first design with zero tracking
+• Open source components giving back to the community
+
+🔮 FUTURE-PROOFING:
+• Quantum-ready encryption and security
+• Compatibility with emerging devices (AR glasses, brain interfaces)
+• Modular architecture ready for unknown technologies
+• Self-updating AI systems that improve over time
+• Integration points for technologies that don't exist yet
+
+This isn't just modern - it's TOMORROW, TODAY! 🚀✨`;
+            }
+        };
+
+        // Achievement system for maximum fun!
+        const achievementList = [
+            { id: 'firstPrompt', name: 'First Steps!', desc: 'Generated your first prompt', icon: '🎯' },
+            { id: 'explorer', name: 'Style Explorer', desc: 'Tried 3 different styles', icon: '🗺️' },
+            { id: 'master', name: 'Style Master', desc: 'Used all 8 styles', icon: '👑' },
+            { id: 'addicted', name: 'Prompt Addict', desc: 'Generated 10 prompts', icon: '⚡' },
+            { id: 'creative', name: 'Creative Genius', desc: 'Used Creative style 3 times', icon: '🎨' },
+            { id: 'technical', name: 'Tech Wizard', desc: 'Used Technical style 5 times', icon: '🧙‍♂️' },
+            { id: 'wildcard', name: 'Wild Card', desc: 'Used the surprise me button', icon: '🎲' },
+            { id: 'marathon', name: 'Prompt Marathon', desc: '25 prompts in one session!', icon: '🏃‍♂️' }
+        ];
+
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Prompt Playground Loaded!');
+            
+            const styleOptions = document.querySelectorAll('.style-option');
+            const ideaInput = document.getElementById('ideaInput');
+            const generateBtn = document.getElementById('generateBtn');
+            const regenerateBtn = document.getElementById('regenerateBtn');
+            const surpriseBtn = document.getElementById('surpriseBtn');
+            const resultSection = document.getElementById('resultSection');
+            const loadingSection = document.getElementById('loadingSection');
+            const promptOutput = document.getElementById('promptOutput');
+            const copyBtn = document.getElementById('copyBtn');
+
+            // Style selection with fun effects
+            styleOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    console.log('🎨 Style selected:', this.dataset.style);
+                    styleOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedStyle = this.dataset.style;
+                    stylesUsed.add(selectedStyle);
+                    updateStats();
+                    checkAchievements();
+                });
+            });
+
+            // Generate button - the main event!
+            generateBtn.addEventListener('click', function() {
+                const idea = ideaInput.value.trim();
+                
+                if (!idea) {
+                    shakeElement(ideaInput);
+                    ideaInput.placeholder = "Come on, don't be shy! Tell me your amazing idea! 🌟";
+                    return;
+                }
+                
+                generatePrompt(idea);
+            });
+
+            // Regenerate button
+            regenerateBtn.addEventListener('click', function() {
+                const idea = ideaInput.value.trim();
+                if (idea) {
+                    generatePrompt(idea);
+                }
+            });
+
+            // Surprise button - random style!
+            surpriseBtn.addEventListener('click', function() {
+                const styles = ['technical', 'creative', 'minimal', 'detailed', 'retro', 'cyberpunk', 'brutalist', 'modern'];
+                const randomStyle = styles[Math.floor(Math.random() * styles.length)];
+                
+                // Animate style selection
+                styleOptions.forEach(opt => opt.classList.remove('active'));
+                const targetOption = document.querySelector(`[data-style="${randomStyle}"]`);
+                targetOption.classList.add('active');
+                selectedStyle = randomStyle;
+                stylesUsed.add(selectedStyle);
+                
+                // Generate with new style
+                const idea = ideaInput.value.trim();
+                if (idea) {
+                    showAchievement('🎲 Wild Card!', 'You embraced chaos!');
+                    generatePrompt(idea);
+                } else {
+                    setRandomIdea();
+                    setTimeout(() => generatePrompt(ideaInput.value), 500);
+                }
+                
+                updateStats();
+                checkAchievements();
+            });
+
+            // Copy button with celebration
+            copyBtn.addEventListener('click', function() {
+                const text = promptOutput.textContent;
+                
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        showCopySuccess();
+                        createConfetti();
+                    }).catch(() => {
+                        fallbackCopy(text);
+                    });
+                } else {
+                    fallbackCopy(text);
+                }
+            });
+
+            function generatePrompt(idea) {
+                console.log('🎯 Generating prompt for:', idea, 'Style:', selectedStyle);
+                
+                // Show loading with random funny messages
+                const loadingMessages = [
+                    '🔮 Consulting the prompt wizards...',
+                    '🎨 Mixing creativity potions...',
+                    '⚡ Charging up the idea amplifiers...',
+                    '🚀 Launching creativity rockets...',
+                    '🧠 Activating genius mode...',
+                    '✨ Sprinkling magic prompt dust...'
+                ];
+                
+                const randomMessage = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
+                document.querySelector('.loading-text').textContent = randomMessage;
+                
+                resultSection.classList.add('hidden');
+                loadingSection.classList.remove('hidden');
+                generateBtn.disabled = true;
+                
+                // Generate after fun delay
+                setTimeout(() => {
+                    try {
+                        const generator = promptGenerators[selectedStyle];
+                        const prompt = generator(idea);
+                        
+                        promptOutput.textContent = prompt;
+                        loadingSection.classList.add('hidden');
+                        resultSection.classList.remove('hidden');
+                        generateBtn.disabled = false;
+                        
+                        // Update stats and check achievements
+                        promptsGenerated++;
+                        currentStreak++;
+                        stylesUsed.add(selectedStyle);
+                        updateStats();
+                        checkAchievements();
+                        
+                        // Scroll to result
+                        resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        
+                    } catch (error) {
+                        console.error('❌ Error generating prompt:', error);
+                        promptOutput.textContent = 'Oops! The prompt wizards are taking a coffee break ☕ Try again!';
+                        loadingSection.classList.add('hidden');
+                        resultSection.classList.remove('hidden');
+                        generateBtn.disabled = false;
+                    }
+                }, Math.random() * 1000 + 1500);
+            }
+
+            function updateStats() {
+                document.getElementById('promptsGenerated').textContent = promptsGenerated;
+                document.getElementById('stylesUsed').textContent = stylesUsed.size;
+                document.getElementById('currentStreak').textContent = currentStreak;
+            }
+
+            function checkAchievements() {
+                achievementList.forEach(achievement => {
+                    if (!achievements.includes(achievement.id)) {
+                        let unlocked = false;
+                        
+                        switch(achievement.id) {
+                            case 'firstPrompt':
+                                unlocked = promptsGenerated >= 1;
+                                break;
+                            case 'explorer':
+                                unlocked = stylesUsed.size >= 3;
+                                break;
+                            case 'master':
+                                unlocked = stylesUsed.size >= 8;
+                                break;
+                            case 'addicted':
+                                unlocked = promptsGenerated >= 10;
+                                break;
+                            case 'marathon':
+                                unlocked = promptsGenerated >= 25;
+                                break;
+                        }
+                        
+                        if (unlocked) {
+                            achievements.push(achievement.id);
+                            showAchievement(achievement.icon + ' ' + achievement.name, achievement.desc);
+                        }
+                    }
+                });
+            }
+
+            function showAchievement(title, desc) {
+                const achievement = document.getElementById('achievement');
+                const achievementText = document.getElementById('achievementText');
+                
+                achievementText.innerHTML = `<strong>${title}</strong><br><small>${desc}</small>`;
+                achievement.classList.add('show');
+                
+                createConfetti();
+                
+                setTimeout(() => {
+                    achievement.classList.remove('show');
+                }, 4000);
+            }
+
+            function showCopySuccess() {
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '🎉 Copied!';
+                copyBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                    copyBtn.style.background = '';
+                }, 3000);
+            }
+
+            function fallbackCopy(text) {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showCopySuccess();
+                } catch (err) {
+                    console.error('Copy failed:', err);
+                    alert('Copy failed! But your prompt is still amazing! 🌟');
+                }
+                document.body.removeChild(textArea);
+            }
+
+            function shakeElement(element) {
+                element.style.animation = 'none';
+                element.offsetHeight; // Trigger reflow
+                element.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => element.style.animation = '', 500);
+            }
+
+            function createConfetti() {
+                const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#fd79a8', '#6c5ce7'];
+                
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(() => {
+                        const confetti = document.createElement('div');
+                        confetti.className = 'confetti';
+                        confetti.style.left = Math.random() * 100 + 'vw';
+                        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        confetti.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                        document.body.appendChild(confetti);
+                        
+                        setTimeout(() => confetti.remove(), 3000);
+                    }, i * 50);
+                }
+            }
+
+            console.log('🎉 All systems ready! Let the fun begin!');
+        });
+
+        // Global functions for surprise ideas
+        function setRandomIdea() {
+            const randomIdea = randomIdeas[Math.floor(Math.random() * randomIdeas.length)];
+            document.getElementById('ideaInput').value = randomIdea;
+            
+            // Add some visual flair
+            const input = document.getElementById('ideaInput');
+            input.style.background = 'linear-gradient(135deg, #fef3c7, #fcd34d)';
+            setTimeout(() => {
+                input.style.background = '';
+            }, 1000);
+        }
+
+        function setIdea(idea) {
+            document.getElementById('ideaInput').value = idea;
+            
+            // Visual feedback
+            const input = document.getElementById('ideaInput');
+            input.style.transform = 'scale(1.02)';
+            setTimeout(() => {
+                input.style.transform = '';
+            }, 200);
+        }
+
+        // Add shake animation to CSS
+        const shakeKeyframes = `
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }`;
+        
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = shakeKeyframes;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
