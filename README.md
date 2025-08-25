@@ -1,6 +1,3 @@
-Here’s a draft **README.md** for your `idea2prompt-generator.html` project:
-
----
 
 # 🚀 idea2prompt - The Ultimate Prompt Playground!
 
@@ -124,7 +121,7 @@ Whether you want to design a **technical stack plan** or a **whimsical creative 
 
 ## 👩‍💻 Contributors
 
-* **Your Name** – Creator & Developer
+* Asish Padhi – Creator & Developer
 
 ---
 
@@ -132,6 +129,4 @@ Whether you want to design a **technical stack plan** or a **whimsical creative 
 
 This project is licensed under the **MIT License** – feel free to use, modify, and share!
 
----
 
-Would you like me to also generate a **screenshot preview section** (with mockups/images placeholders) so your README looks more engaging on GitHub?
