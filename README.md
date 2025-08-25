@@ -47,7 +47,7 @@ Whether you want to design a **technical stack plan** or a **whimsical creative 
 ## 🛠️ Installation
 
 1. Clone or download this repository.
-2. Open `idea2prompt-generator.html` in any modern web browser (Chrome, Firefox, Safari, Edge).
+2. Open `index.html` in any modern web browser (Chrome, Firefox, Safari, Edge).
 3. No additional setup required! 🎉
 
 ---
