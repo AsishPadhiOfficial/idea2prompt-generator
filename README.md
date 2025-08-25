@@ -1,7 +1,7 @@
 
 # 🚀 idea2prompt - The Ultimate Prompt Playground!
 
-https://asishpadhiofficial.github.io/idea2prompt-generator/
+🌐 live link - https://asishpadhiofficial.github.io/idea2prompt-generator/
 
 Turn your **wildest ideas** into **epic prompts** with a fun, interactive web app. 🎉
 
